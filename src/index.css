@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-color: #602e9e;
+  --btn-color: #602e9e;
+  --border-color: #602e9e;
+  --text-color: #ffffff;
+  --main-hover-color: #e6e3eb;
+}
+html {
+  scrollbar-color: var(--header-bg-color) rgb(247, 244, 244);
+  scrollbar-width: thin;
+  height: 100%;
+  box-sizing: border-box;
+}
+body {
+  height: 100%;
+}
+@media (max-width: 640px) {
+  body {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(157, 157, 154, 1);
+  border-radius: 5rem;
+  transition: all 0.15s ease-in-out;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f59e0b;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+  background: rgb(241, 241, 239);
+}
+
+@keyframes messageLoadingAnim {
+  0%,
+  100% {
+    transform: translateY(-70%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.mainbg {
+  background-color: var(--main-bg-color);
+}
+
+/* Chrome, Safari and Opera */
+#slider::-webkit-scrollbar {
+  display: none;
+}
+
+#slider {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.grid-container--fit {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+
