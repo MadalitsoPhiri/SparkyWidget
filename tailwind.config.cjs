@@ -26,6 +26,7 @@ maxWidth: {
       btnColor: "var(--btn-color)",
       btnTextColor: "var(--btn-txt-color)",
       headerTextColor: "var(--header-text-color)",
+      headerTextColorActual: "var(--header-text-color-actual)",
       mainHoverColor:"var(--main-hover-color)",
       textHoverColor:"var(--text-hover-color)",
       chevronColor:"var(--chevron-color)",
