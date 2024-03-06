@@ -67,7 +67,7 @@ export default function Home() {
       <div className="bg-headerBgColor absolute h-[256px] w-full"></div>
       <div className="bg-transparent w-full h-full z-10 overflow-y-auto py-[16px]">
         <motion.div
-          className="bg-transparent w-full  mb-[16px] p-[20px]"
+          className="bg-headerBgColor w-full  mb-[16px] p-[20px]"
           initial={{ y: 200, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: "tween", duration: 0.4 }}
