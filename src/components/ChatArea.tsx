@@ -565,38 +565,27 @@ export default function ChatArea() {
                     {config.greetings.chatAreaGreetingText}
                   </p>
                 </div>
-                <div
-                  onClick={handleSendMessagefromOptions}
-                  className="group rounded-[8px] p-[10px] bg-mainHoverColor mb-[8px] hover:bg-headerBgColor cursor-pointer"
-                >
-                  <p
-                    className={` text-chatOptionsTextColor group-hover:text-chevronColor  text-[14px] leading-[20px]`}
-                  >
-                    {config.chat_suggestions.suggestion1}
-                  </p>
-                </div>
 
-                <div
-                  onClick={handleSendMessagefromOptions}
-                  className="group rounded-[8px] p-[10px] bg-mainHoverColor mb-[8px] hover:bg-headerBgColor cursor-pointer"
-                >
-                  <p
-                    className={` text-chatOptionsTextColor group-hover:text-chevronColor   text-[14px] leading-[20px]`}
-                  >
-                    {config.chat_suggestions.suggestion2}
-                  </p>
-                </div>
-
-                <div
-                  onClick={handleSendMessagefromOptions}
-                  className="group rounded-[8px] p-[10px] bg-mainHoverColor  mb-[8px] hover:bg-headerBgColor cursor-pointer"
-                >
-                  <p
-                    className={` text-chatOptionsTextColor group-hover:text-chevronColor  text-[14px] leading-[20px]`}
-                  >
-                    {config.chat_suggestions.suggestion3}
-                  </p>
-                </div>
+                {[
+                  config.chat_suggestions.suggestion1,
+                  config.chat_suggestions.suggestion2,
+                  config.chat_suggestions.suggestion3,
+                ]
+                  .filter(suggestion => !!suggestion)
+                  .map((suggestion) => {
+                    return (
+                      <div
+                        onClick={handleSendMessagefromOptions}
+                        className="group rounded-[8px] p-[10px] bg-mainHoverColor  mb-[8px] hover:bg-headerBgColor cursor-pointer"
+                      >
+                        <p
+                          className={`text-chatOptionsTextColor group-hover:text-chevronColor  text-[14px] leading-[20px]`}
+                        >
+                          {suggestion}
+                        </p>
+                      </div>
+                    )
+                  })}
                 <div ref={bottomRef} />
               </div>
             ) : (
