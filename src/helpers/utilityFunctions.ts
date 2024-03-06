@@ -239,17 +239,42 @@ export const formatBytes = (bytes: number, decimals = 2) => {
 };
 
 
+export const getHexLuminance = (hexString: string) => {
+  const color =
+    hexString.charAt(0) === '#' ? hexString.substring(1, 7) : hexString;
+  const r = parseInt(color.substring(0, 2), 16); // hexToR
+  const g = parseInt(color.substring(2, 4), 16); // hexToG
+  const b = parseInt(color.substring(4, 6), 16); // hexToB
+  return r * 0.299 + g * 0.587 + b * 0.114;
+};
+
 export const pickTextColorBasedOnBgColorAdvanced = (
   bgColor: string,
   lightColor: string,
-  darkColor: string
+  darkColor: string,
 ) => {
-  var color = (bgColor.charAt(0) === '#') ? bgColor.substring(1, 7) : bgColor;
-  var r = parseInt(color.substring(0, 2), 16); // hexToR
-  var g = parseInt(color.substring(2, 4), 16); // hexToG
-  var b = parseInt(color.substring(4, 6), 16); // hexToB
-  return (((r * 0.299) + (g * 0.587) + (b * 0.114)) > 186) ?
-    darkColor : lightColor;
+  return getHexLuminance(bgColor) > 186 ? darkColor : lightColor;
+};
+
+export const pickHeaderTextcolor = (
+  headerTextColor: string,
+  bgColor: string,
+  lightColor: string,
+  darkColor: string,
+) => {
+  // Get the luminance of the header and bg color
+  const headerColorLuminance = getHexLuminance(headerTextColor);
+  const bgColorLuminance = getHexLuminance(bgColor);
+
+  const luminanceDiff = Math.abs(headerColorLuminance - bgColorLuminance);
+
+  // Compare luminances
+  if (luminanceDiff > 124) {
+    // User picked colours have good contrast use headerTextColor
+    return headerTextColor;
+  } else {
+    return pickTextColorBasedOnBgColorAdvanced(bgColor, lightColor, darkColor);
+  }
 };
 
 export const generateRandomID = () => {
