@@ -35,7 +35,7 @@ import {
 import { useDimensions } from "./hooks/useDimensions";
 
 
-import { pickTextColorBasedOnBgColorAdvanced } from "./helpers/utilityFunctions";
+import { pickHeaderTextcolor, pickTextColorBasedOnBgColorAdvanced } from "./helpers/utilityFunctions";
 import { set_user_info } from "./store/slices/userInfoSlice";
 export interface AppProps {
   widgetId: string;
@@ -177,6 +177,15 @@ const App: FC<AppProps> = (props) => {
       document.documentElement.style.setProperty(
         "--header-text-color",
         config.colors.header_text_color
+      );
+      document.documentElement.style.setProperty(
+        "--header-text-color-actual",
+        pickHeaderTextcolor(
+          config.colors.header_text_color,
+          config.colors.header_bg_color,
+          "#FFFFFF",
+          "#000000"
+        )
       );
       document.documentElement.style.setProperty(
         "--border-color",
