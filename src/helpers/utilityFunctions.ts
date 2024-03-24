@@ -239,17 +239,68 @@ export const formatBytes = (bytes: number, decimals = 2) => {
 };
 
 
+export const getHexLuminance = (hexString: string) => {
+  const color =
+    hexString.charAt(0) === '#' ? hexString.substring(1, 7) : hexString;
+  const r = parseInt(color.substring(0, 2), 16); // hexToR
+  const g = parseInt(color.substring(2, 4), 16); // hexToG
+  const b = parseInt(color.substring(4, 6), 16); // hexToB
+  // converting to grayscale btw
+  return r * 0.299 + g * 0.587 + b * 0.114;
+};
+
+export const hexToRGB = (hexString: string) => {
+  const color =
+    hexString.charAt(0) === '#' ? hexString.substring(1, 7) : hexString;
+  const r = parseInt(color.substring(0, 2), 16); // hexToR
+  const g = parseInt(color.substring(2, 4), 16); // hexToG
+  const b = parseInt(color.substring(4, 6), 16); // hexToB
+
+  return [r, g, b] as const
+}
+
+export const luminance = (r: number, g: number, b: number) => {
+  var a = [r, g, b].map((v) => {
+    v /= 255;
+    return v <= 0.03928
+      ? v / 12.92
+      : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+}
+
+export const getContrastRatio = (color1: string, color2: string) => {
+  var lum1 = luminance(...hexToRGB(color1));
+  var lum2 = luminance(...hexToRGB(color2));
+
+  var brightest = Math.max(lum1, lum2);
+  var darkest = Math.min(lum1, lum2);
+  return (brightest + 0.05) / (darkest + 0.05);
+}
+
 export const pickTextColorBasedOnBgColorAdvanced = (
   bgColor: string,
   lightColor: string,
-  darkColor: string
+  darkColor: string,
 ) => {
-  var color = (bgColor.charAt(0) === '#') ? bgColor.substring(1, 7) : bgColor;
-  var r = parseInt(color.substring(0, 2), 16); // hexToR
-  var g = parseInt(color.substring(2, 4), 16); // hexToG
-  var b = parseInt(color.substring(4, 6), 16); // hexToB
-  return (((r * 0.299) + (g * 0.587) + (b * 0.114)) > 186) ?
-    darkColor : lightColor;
+  return getHexLuminance(bgColor) > 186 ? darkColor : lightColor;
+};
+
+export const pickHeaderTextcolor = (
+  headerTextColor: string,
+  bgColor: string,
+  lightColor: string,
+  darkColor: string,
+) => {
+  const contrastRatio = getContrastRatio(headerTextColor, bgColor);
+
+  // Compare luminances
+  if (contrastRatio > 4.3) {
+    // User picked colours have good contrast use headerTextColor
+    return headerTextColor;
+  } else {
+    return pickTextColorBasedOnBgColorAdvanced(bgColor, lightColor, darkColor);
+  }
 };
 
 export const generateRandomID = () => {

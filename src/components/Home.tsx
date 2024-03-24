@@ -93,10 +93,10 @@ export default function Home() {
                   clipRule="evenodd"></path>
               </svg>
             )}
-          <p className={` text-chevronColor font-normal text-[30px] mb-[16px]`}>
+          <p className={` text-headerTextColorActual font-normal text-[30px] mb-[16px]`}>
             {config.greetings.header.main}
           </p>
-          <p className={`text-chevronColor font-extralight text-[13px]`}>
+          <p className={`text-headerTextColorActual font-extralight text-[13px]`}>
             {config.greetings.header.description}
           </p>
         </motion.div>
