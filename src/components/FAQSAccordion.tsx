@@ -17,7 +17,7 @@ const Accordion:FC<AccordionProps> = ({ question, answer }) => {
         <div className='text-[15px] font-medium text-btnColor '>{question}</div>
       </div>
       {isActive && <motion.div 
-      className="py-3 px-4 space-x-4 text-gray-500 ">{answer}</motion.div>}
+      className="py-3 px-4 space-x-4 text-gray-500" dangerouslySetInnerHTML={{ __html: answer }}></motion.div>}
     </motion.div>
     </AnimatePresence>
     </motion.div>
