@@ -22,6 +22,7 @@ import { enableMapSet } from "immer";
 import { Dispatch } from "react";
 import { Messages } from "../../constants/Message";
 import { AppDispatch, RootState } from "@store";
+import { set_user_info, user_info } from "./userInfoSlice";
 
 enableMapSet();
 const STATE_KEY = "conversations";
@@ -35,6 +36,7 @@ export const ConversationSlice = createSlice({
     conversation_typing_status: {},
     temp_messages: new Map(),
     isLoading: true,
+    promptLoading: false,
     hasFetchedOnce: false,
     selected_conversation_id: null,
     fetching_more_conversations: false,
@@ -119,6 +121,9 @@ export const ConversationSlice = createSlice({
     set_play_notification: (state, action) => {
       state.play_notification = action.payload;
     },
+    set_prompt_loading: (state, action) => {
+      state.promptLoading = action.payload;
+    },
     add_message: (state, action) => {
       const { conversation_id, msg, conversation } = action.payload;
       if (conversation_id && msg) {
@@ -130,7 +135,6 @@ export const ConversationSlice = createSlice({
       }
 
       if (conversation) {
-        console.log('conversation',conversation)
         const con = state.conversations.get(conversation_id);
         con.assigned_to = conversation.assigned_to;
         state.conversations.set(conversation_id, con);
@@ -498,6 +502,7 @@ export const {
   set_temp_conversation,
   add_temp_message,
   add_message,
+  set_prompt_loading,
   cancelCurrentAttachmentsUpload,
   queueUpload,
   dequeueUpload,
@@ -586,12 +591,39 @@ export const send_message = (conversation_id: string, msg: any) => {
   };
 };
 
-export const sendPromptResponse = (msg: any) => {
+export const sendPromptResponse = (email: string, msg: any) => {
   return async (dispatch: any, get_state: any) => {
-    await dispatch(updatePromptAsMesssage({ sending: true, msg }));
     //send socket message here
     const socket = get_state().auth.socket;
-    socket.emit("onNewMessage", msg);
+
+    console.log('state:', get_state());
+
+    dispatch(set_prompt_loading(true));
+
+    socket.emit(SOCKET_EVENT_NAME.UPDATE_USER_EMAIL, {
+      event_name: SOCKET_EVENT_NAME.UPDATE_USER_EMAIL,
+      data: {
+        id: msg.sender._id,
+        conversation_id: msg.conversation._id,
+        message_id: msg._id,
+        workspace_id: msg.conversation.workspace,
+        user: {
+          email,
+        },
+      }
+    }, (resp: any) => {
+      console.log('new user data:', resp);
+      dispatch(set_prompt_loading(false))
+
+      // TODO: also add the updating of user info here
+      dispatch(add_message({
+        msg: resp?.data?.message,
+        conversation_id: resp?.data?.message?.conversation?._id,
+        conversation: resp?.data?.message?.conversation,
+      }));
+
+      dispatch(set_user_info(resp?.data?.user));
+    });
   };
 };
 

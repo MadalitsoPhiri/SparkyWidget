@@ -33,7 +33,8 @@ const Message: FC<MessageProps> = ({
   const lastIndex = MessageArray.length - 1;
   const currentIndex = index;
   const { user } = useSelector(user_info_selector);
-  const { users_info, user_id } = useSelector(auth_selector);
+
+  const { users_info, user_id, user_email } = useSelector(auth_selector);
   const [img1Loaded, setImg1Loaded] = useState(false);
   const [aIModalOpen, setAIModalOpen] = useState(false);
 
@@ -143,7 +144,7 @@ const Message: FC<MessageProps> = ({
     )
   ) : msg.sender._id === user._id && msg.type == MESSAGE_TYPE.PROMPT ? (
     <InputPrompt
-      title={msg.prompt.title}
+      title={msg?.content?.payload?.title || ""}
       lastIndex={lastIndex}
       currentIndex={currentIndex}
       msg={msg}

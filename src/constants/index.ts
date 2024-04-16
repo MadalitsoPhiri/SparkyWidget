@@ -10,6 +10,7 @@ export const SOCKET_EVENT_NAME = {
   GET_CONFIG: "get_config",
   GET_MESSAGES: "get_messages",
   UPDATE_USER_INFO: "update_user_info",
+  UPDATE_USER_EMAIL: "update_user_email",
   GET_USER_INFO: "get_user_info",
   UPDATE_CONFIG: "update_config",
 };
@@ -32,6 +33,10 @@ export enum MESSAGE_TYPE {
   SURVEY_ANSWER = "SURVEY_ANSWER",
   REPLY = "REPLY",
   SWITCH_TO_AGENT = 'SWITCH_TO_AGENT',
+}
+
+export enum PROMPT_TYPE {
+  EMAIL = 'EMAIL',
 }
 
 export const MESSAGE_STATUS = {
